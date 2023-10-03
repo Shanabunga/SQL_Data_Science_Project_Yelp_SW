@@ -1,0 +1,1100 @@
+Data Scientist Role Play: Profiling and Analyzing the Yelp Dataset Coursera Worksheet
+
+This is a 2-part assignment. In the first part, you are asked a series of questions that will help you profile and understand the data just like a data scientist would. For this first part of the assignment, you will be assessed both on the correctness of your findings, as well as the code you used to arrive at your answer. You will be graded on how easy your code is to read, so remember to use proper formatting and comments where necessary.
+
+In the second part of the assignment, you are asked to come up with your own inferences and analysis of the data for a particular research question you want to answer. You will be required to prepare the dataset for the analysis you choose to do. As with the first part, you will be graded, in part, on how easy your code is to read, so use proper formatting and comments to illustrate and communicate your intent as required.
+
+For both parts of this assignment, use this "worksheet." It provides all the questions you are being asked, and your job will be to transfer your answers and SQL coding where indicated into this worksheet so that your peers can review your work. You should be able to use any Text Editor (Windows Notepad, Apple TextEdit, Notepad ++, Sublime Text, etc.) to copy and paste your answers. If you are going to use Word or some other page layout application, just be careful to make sure your answers and code are lined appropriately.
+In this case, you may want to save as a PDF to ensure your formatting remains intact for you reviewer.
+
+
+
+Part 1: Yelp Dataset Profiling and Understanding
+
+1. Profile the data by finding the total number of records for each of the tables below:
+
+--SQL Code below each bullet with answer after = sign
+	
+i. Attribute table = 10000
+
+SELECT COUNT(*)
+FROM attribute
+
++-----------+
+| COUNT (*) |
++-----------+
+|     10000 |
++-----------+
+
+ii. Business table = 10000
+
+SELECT COUNT (*)
+FROM business
+
++-----------+
+| COUNT (*) |
++-----------+
+|     10000 |
++-----------+
+
+iii. Category table = 10000
+
+SELECT COUNT (*)
+FROM category
+
++-----------+
+| COUNT (*) |
++-----------+
+|     10000 |
++-----------+
+
+iv. Checkin table = 10000
+
+SELECT COUNT (*)
+FROM checkin
+
++-----------+
+| COUNT (*) |
++-----------+
+|     10000 |
++-----------+
+
+v. elite_years table = 10000
+
+SELECT COUNT (*)
+FROM elite_years
+
++-----------+
+| COUNT (*) |
++-----------+
+|     10000 |
++-----------+
+
+vi. friend table = 10000
+
+SELECT COUNT (*)
+FROM friend
+
++-----------+
+| COUNT (*) |
++-----------+
+|     10000 |
++-----------+
+
+vii. hours table = 10000
+
+SELECT COUNT (*)
+FROM hours
+
++-----------+
+| COUNT (*) |
++-----------+
+|     10000 |
++-----------+
+
+viii. photo table = 10000
+
+SELECT COUNT (*)
+FROM photo
+
++-----------+
+| COUNT (*) |
++-----------+
+|     10000 |
++-----------+
+
+ix. review table = 10000
+
+SELECT COUNT (*)
+FROM review
+
++-----------+
+| COUNT (*) |
++-----------+
+|     10000 |
++-----------+
+
+x. tip table = 10000
+
+SELECT COUNT (*)
+FROM tip
+
++-----------+
+| COUNT (*) |
++-----------+
+|     10000 |
++-----------+
+
+xi. user table = 10000
+
+SELECT COUNT (*)
+FROM user	
+
++-----------+
+| COUNT (*) |
++-----------+
+|     10000 |
++-----------+
+
+2. Find the total distinct records by either the foreign key or primary key for each table. If two foreign keys are listed in the table, please specify which foreign key.
+
+--SQL Code below each bullet with answer after = sign
+
+i. Business = 10000
+
+SELECT COUNT (DISTINCT id)
+FROM business
+
++---------------------+
+| COUNT (DISTINCT id) |
++---------------------+
+|               10000 |
++---------------------+
+
+ii. Hours = 1562
+
+SELECT COUNT (DISTINCT business_id)
+FROM hours
+
++------------------------------+
+| COUNT (DISTINCT business_id) |
++------------------------------+
+|                         1562 |
++------------------------------+
+
+iii. Category = 2643
+
+SELECT COUNT (DISTINCT business_id)
+FROM category
+
++------------------------------+
+| COUNT (DISTINCT business_id) |
++------------------------------+
+|                         2643 |
++------------------------------+
+
+iv. Attribute = 1115
+
+SELECT COUNT (DISTINCT business_id)
+FROM attribute
+
++------------------------------+
+| COUNT (DISTINCT business_id) |
++------------------------------+
+|                         1115 |
++------------------------------+
+
+--For the below point v. foreign key business_id was used (this table has 1 primary and 2 foreign keys)
+
+v. Review = 8090
+
+SELECT COUNT (DISTINCT business_id)
+FROM review
+
++------------------------------+
+| COUNT (DISTINCT business_id) |
++------------------------------+
+|                         8090 |
++------------------------------+
+
+vi. Checkin = 493
+
+SELECT COUNT (DISTINCT business_id)
+FROM checkin
+
++------------------------------+
+| COUNT (DISTINCT business_id) |
++------------------------------+
+|                          493 |
++------------------------------+
+
+--For the below point vii. foreign key business_id was used (this table has 1 primary and 1 foreign key)
+
+vii. Photo = 6493
+
+SELECT COUNT (DISTINCT business_id)
+FROM photo
+
++------------------------------+
+| COUNT (DISTINCT business_id) |
++------------------------------+
+|                         6493 |
++------------------------------+
+
+--For the below point viii. foreign key user_id was used (this table has 2 foreign keys)
+
+viii. Tip = 537
+
+SELECT COUNT (DISTINCT user_id)
+FROM tip
+
++--------------------------+
+| COUNT (DISTINCT user_id) |
++--------------------------+
+|                      537 |
++--------------------------+
+
+ix. User = 10000
+
+SELECT COUNT (DISTINCT id)
+FROM user
+
++---------------------+
+| COUNT (DISTINCT id) |
++---------------------+
+|               10000 |
++---------------------+
+
+x. Friend = 
+
+SELECT COUNT (DISTINCT user_id)
+FROM friend
+
++--------------------------+
+| COUNT (DISTINCT user_id) |
++--------------------------+
+|                       11 |
++--------------------------+
+
+xi. Elite_years = 2780
+
+SELECT COUNT (DISTINCT user_id)
+FROM elite_years
+
++--------------------------+
+| COUNT (DISTINCT user_id) |
++--------------------------+
+|                     2780 |
++--------------------------+
+
+Note: Primary Keys are denoted in the ER-Diagram with a yellow key icon.	
+
+
+
+3. Are there any columns with null values in the Users table? Indicate "yes," or "no."
+
+	Answer: No
+	
+	
+	SQL code used to arrive at answer:
+
+--Used the coalesce funtion to combine the checks for multiple columns into a single condition
+
+SELECT *
+FROM user
+WHERE COALESCE(id, name, review_count, yelping_since, useful, funny, cool, fans, average_stars, compliment_hot, compliment_more, compliment_profile, compliment_cute, compliment_list, compliment_note, compliment_plain, compliment_cool, compliment_funny, compliment_writer, compliment_photos) IS NULL
+
++----+------+--------------+---------------+--------+-------+------+------+---------------+----------------+-----------------+--------------------+-----------------+-----------------+-----------------+------------------+-----------------+------------------+-------------------+-------------------+
+| id | name | review_count | yelping_since | useful | funny | cool | fans | average_stars | compliment_hot | compliment_more | compliment_profile | compliment_cute | compliment_list | compliment_note | compliment_plain | compliment_cool | compliment_funny | compliment_writer | compliment_photos |
++----+------+--------------+---------------+--------+-------+------+------+---------------+----------------+-----------------+--------------------+-----------------+-----------------+-----------------+------------------+-----------------+------------------+-------------------+-------------------+
++----+------+--------------+---------------+--------+-------+------+------+---------------+----------------+-----------------+--------------------+-----------------+-----------------+-----------------+------------------+-----------------+------------------+-------------------+-------------------+
+(Zero rows)
+
+--Also used condition statements to verify results on certain columns
+
+SELECT sum(CASE 
+			WHEN id IS NULL
+				THEN 1
+			ELSE 0
+			END) AS column_id
+	,sum(CASE 
+			WHEN name IS NULL
+				THEN 1
+			ELSE 0
+			END) AS column_name
+	,sum(CASE 
+			WHEN review_count IS NULL
+				THEN 1
+			ELSE 0
+			END) AS column_review
+	,sum(CASE 
+			WHEN yelping_since IS NULL
+				THEN 1
+			ELSE 0
+			END) AS column_yelping
+	,sum(CASE 
+			WHEN compliment_funny IS NULL
+				THEN 1
+			ELSE 0
+			END) AS column_cfunny
+	,sum(CASE 
+			WHEN compliment_cool IS NULL
+				THEN 1
+			ELSE 0
+			END) AS column_ccool
+FROM user
+
++-----------+-------------+---------------+----------------+---------------+--------------+
+| column_id | column_name | column_review | column_yelping | column_cfunny | column_ccool |
++-----------+-------------+---------------+----------------+---------------+--------------+
+|         0 |           0 |             0 |              0 |             0 |            0 |
++-----------+-------------+---------------+----------------+---------------+--------------+
+
+	
+4. For each table and column listed below, display the smallest (minimum), largest (maximum), and average (mean) value for the following fields:
+
+--SQL Code below each bullet with answer
+
+	i. Table: Review, Column: Stars
+	
+		min: 1		max: 5		avg: 3.7082
+		
+SELECT MIN(stars) AS min_value,
+       MAX(stars) AS max_value,
+       AVG(stars) AS avg_value
+FROM review
+
++-----------+-----------+-----------+
+| min_value | max_value | avg_value |
++-----------+-----------+-----------+
+|         1 |         5 |    3.7082 |
++-----------+-----------+-----------+
+
+
+	ii. Table: Business, Column: Stars
+	
+		min: 1.0	max: 5.0	avg: 3.6549
+		
+SELECT MIN(stars) AS min_value,
+       MAX(stars) AS max_value,
+       AVG(stars) AS avg_value
+FROM business
+
++-----------+-----------+-----------+
+| min_value | max_value | avg_value |
++-----------+-----------+-----------+
+|       1.0 |       5.0 |    3.6549 |
++-----------+-----------+-----------+
+
+	iii. Table: Tip, Column: Likes
+	
+		min: 0		max:2	avg:0.0144
+	
+SELECT MIN(likes) AS min_value,
+       MAX(likes) AS max_value,
+       AVG(likes) AS avg_value
+FROM tip
+
++-----------+-----------+-----------+
+| min_value | max_value | avg_value |
++-----------+-----------+-----------+
+|         0 |         2 |    0.0144 |
++-----------+-----------+-----------+
+	
+	iv. Table: Checkin, Column: Count
+	
+		min: 1		max: 53		avg: 1.9414
+
+SELECT MIN(count) AS min_value,
+       MAX(count) AS max_value,
+       AVG(count) AS avg_value
+FROM checkin
+
++-----------+-----------+-----------+
+| min_value | max_value | avg_value |
++-----------+-----------+-----------+
+|         1 |        53 |    1.9414 |
++-----------+-----------+-----------+
+		
+	
+	v. Table: User, Column: Review_count
+	
+		min:0		max:2000		avg:24.2995
+		
+SELECT MIN(review_count) AS min_value,
+       MAX(review_count) AS max_value,
+       AVG(review_count) AS avg_value
+FROM user
+
++-----------+-----------+-----------+
+| min_value | max_value | avg_value |
++-----------+-----------+-----------+
+|         0 |      2000 |   24.2995 |
++-----------+-----------+-----------+
+
+
+5. List the cities with the most reviews in descending order:
+
+	SQL code used to arrive at answer:
+
+SELECT b.city,
+	COUNT(r.stars) AS review_count
+FROM business AS b
+LEFT JOIN review AS r ON b.id = r.business_id
+GROUP BY b.city
+ORDER BY review_count DESC
+	
+	Copy and Paste the Result Below:
+	
++-----------------+--------------+
+| city            | review_count |
++-----------------+--------------+
+| Las Vegas       |          193 |
+| Phoenix         |           65 |
+| Toronto         |           51 |
+| Scottsdale      |           37 |
+| Henderson       |           30 |
+| Tempe           |           28 |
+| Pittsburgh      |           23 |
+| Chandler        |           22 |
+| Charlotte       |           21 |
+| Montréal        |           18 |
+| Madison         |           16 |
+| Gilbert         |           13 |
+| Mesa            |           13 |
+| Cleveland       |           12 |
+| North Las Vegas |            6 |
+| Edinburgh       |            5 |
+| Glendale        |            5 |
+| Lakewood        |            5 |
+| Cave Creek      |            4 |
+| Champaign       |            4 |
+| Markham         |            4 |
+| North York      |            4 |
+| Mississauga     |            3 |
+| Surprise        |            3 |
+| Avondale        |            2 |
++-----------------+--------------+
+(Output limit exceeded, 25 of 362 total rows shown)
+	
+6. Find the distribution of star ratings to the business in the following cities:
+
+i. Avon
+
+SQL code used to arrive at answer:
+
+SELECT stars, COUNT(*) AS COUNT
+FROM business
+WHERE city = 'Avon'
+GROUP BY stars
+ORDER BY stars DESC
+
+Copy and Paste the Resulting Table Below (2 columns â€“ star rating and count):
+
++-------+-------+
+| stars | COUNT |
++-------+-------+
+|   5.0 |     1 |
+|   4.5 |     1 |
+|   4.0 |     2 |
+|   3.5 |     3 |
+|   2.5 |     2 |
+|   1.5 |     1 |
++-------+-------+
+
+ii. Beachwood
+
+SQL code used to arrive at answer:
+
+SELECT stars, COUNT(*) AS COUNT
+FROM business
+WHERE city = 'Beachwood'
+GROUP BY stars
+ORDER BY stars DESC
+
+Copy and Paste the Resulting Table Below (2 columns â€“ star rating and count):
+		
++-------+-------+
+| stars | COUNT |
++-------+-------+
+|   5.0 |     5 |
+|   4.5 |     2 |
+|   4.0 |     1 |
+|   3.5 |     2 |
+|   3.0 |     2 |
+|   2.5 |     1 |
+|   2.0 |     1 |
++-------+-------+
+
+7. Find the top 3 users based on their total number of reviews:
+		
+	SQL code used to arrive at answer:
+	
+SELECT u.id AS user_id
+	,u.name AS user_name
+	,COUNT(r.id) AS total_reviews
+FROM user AS u
+LEFT JOIN review AS r ON u.id = r.user_id
+GROUP BY u.id
+	,u.name
+ORDER BY total_reviews DESC LIMIT 3
+		
+	Copy and Paste the Result Below:
+
++------------------------+-----------+---------------+
+| user_id                | user_name | total_reviews |
++------------------------+-----------+---------------+
+| -0udWcFQEt2M8kM3xcIofw | Kaitlan   |             2 |
+| -Biq3Dt8YhkRJEO_ITrvww | Christina |             2 |
+| -l4iRZ2wYow39RTevk21Dg | Craig     |             2 |
++------------------------+-----------+---------------+		
+
+
+8. Does posing more reviews correlate with more fans?
+
+	Please explain your findings and interpretation of the results:
+
+SELECT u.id AS user_id
+	,u.name AS user_name
+	,COUNT(DISTINCT r.id) AS total_reviews
+	,u.fans AS total_fans
+FROM user AS u
+LEFT JOIN review AS r ON u.id = r.user_id
+GROUP BY u.id
+	,u.name
+	,u.fans
+ORDER BY total_reviews DESC
+
++------------------------+-----------+---------------+------------+
+| user_id                | user_name | total_reviews | total_fans |
++------------------------+-----------+---------------+------------+
+| -0udWcFQEt2M8kM3xcIofw | Kaitlan   |             2 |          3 |
+| -Biq3Dt8YhkRJEO_ITrvww | Christina |             2 |         27 |
+| -l4iRZ2wYow39RTevk21Dg | Craig     |             2 |          1 |
+| --Qh8yKWAvIP4V4K8ZPfHA | Dixie     |             1 |         41 |
+| --i0PK1aTXScdV2UkNDkSQ | A'Starra  |             1 |          0 |
+| -0DgO-WJ7yBjAihY_PoUpw | Tonia     |             1 |          0 |
+| -0WUJsVpizkaAYQp05giUA | Jeffrey   |             1 |          0 |
+| -0oUqPRPpbi2MyiK39cCTg | soragamii |             1 |          1 |
+| -27BmUSrHjQQqItaFFIwxA | Cassandra |             1 |          0 |
+| -3uEQhR9MXaC5QTHJ4lraw | Amy       |             1 |          2 |
+| -4ARERfWgDsMfy1Pu7AbLA | Patricia  |             1 |          3 |
+| -594af_E7Z9VVjQc9pJK3g | Andrea    |             1 |         10 |
+| -5Y3idbK2Yzuz9munIF3tg | Laura     |             1 |          0 |
+| -5psN9APmb8RcprBFA6lfw | Frank     |             1 |          0 |
+| -7ABF3eAKE98kiufwQ2dng | Rachel    |             1 |          0 |
+| -7Mo5iv_3t7u000eYaduGw | Ed        |             1 |          1 |
+| -7bM_DeL2Kj2CuYuVDsLNg | Jade      |             1 |          6 |
+| -7rFFU0fNQm4w0zn-r_9Xg | Ryan      |             1 |          1 |
+| -8EE28ZzxVFxwjRqJuDumg | Meg       |             1 |          0 |
+| -8nmj3B-tfY_vFiimtBOsw | Sanaz     |             1 |          3 |
+| -973s-koCwNBKWLh2CdSYQ | Lynn      |             1 |          1 |
+| -9S_Fh-sQebyB1yhEM5zHw | Bob       |             1 |          3 |
+| -9ly39RQ8CvqxPuNZrGEbA | Brenda    |             1 |          0 |
+| -ARdx8hOcEWlMDjzwLYZ_g | AJA       |             1 |         16 |
+| -AkZkFH_md2-2kaSsvgrkg | Alan      |             1 |          1 |
++------------------------+-----------+---------------+------------+
+(Output limit exceeded, 25 of 10000 total rows shown)
+
+--In review of the total fans that users have there does not seem to be a correlation between posting more reviews and getting more fans. We see the table is sorted by total_reviews and the top reviewers have less fans than some that have posted only once. Also if you re-work this code to sort by total_fans you can see that 1 user with the most fans has not posted any reviews. Therefore I would conclude that there must be a different correlation and its not related to the amount of posts a user has made.
+	
+9. Are there more reviews with the word "love" or with the word "hate" in them?
+
+	Answer:
+
+--There are more reviews with the word "love"
+
++------------+------------+
+| love_count | hate_count |
++------------+------------+
+|       1780 |        232 |
++------------+------------+
+	
+	SQL code used to arrive at answer:
+
+SELECT
+    SUM(CASE WHEN text LIKE '%love%' THEN 1 ELSE 0 END) AS love_count,
+    SUM(CASE WHEN text LIKE '%hate%' THEN 1 ELSE 0 END) AS hate_count
+FROM review
+	
+	
+10. Find the top 10 users with the most fans:
+
+	SQL code used to arrive at answer:
+	
+SELECT u.id AS user_id
+	,u.name AS user_name
+	,COUNT(DISTINCT r.id) AS total_reviews
+	,u.fans AS total_fans
+FROM user AS u
+LEFT JOIN review AS r ON u.id = r.user_id
+GROUP BY u.id
+	,u.name
+	,u.fans
+ORDER BY total_fans DESC LIMIT 10
+
+	Copy and Paste the Result Below:
+
+------------------------+-----------+---------------+------------+
+| user_id                | user_name | total_reviews | total_fans |
++------------------------+-----------+---------------+------------+
+| -9I98YbNQnLdAmcYfb324Q | Amy       |             0 |        503 |
+| -8EnCioUmDygAbsYZmTeRQ | Mimi      |             0 |        497 |
+| --2vR0DIsmQ6WfcSzKWigw | Harald    |             0 |        311 |
+| -G7Zkl1wIWBBmD0KRy_sCw | Gerald    |             0 |        253 |
+| -0IiMAZI2SsQ7VmyzJjokQ | Christine |             0 |        173 |
+| -g3XIcCb2b-BD0QBCcq2Sw | Lisa      |             0 |        159 |
+| -9bbDysuiWeo2VShFJJtcw | Cat       |             0 |        133 |
+| -FZBTkAZEXoP7CYvRV2ZwQ | William   |             0 |        126 |
+| -9da1xk7zgnnfO1uTVYGkA | Fran      |             0 |        124 |
+| -lh59ko3dxChBSZ9U7LfUw | Lissa     |             0 |        120 |
++------------------------+-----------+---------------+------------+	
+
+Part 2: Inferences and Analysis
+
+1. Pick one city and category of your choice and group the businesses in that city or category by their overall star rating. Compare the businesses with 2-3 stars to the businesses with 4-5 stars and answer the following questions. Include your code.
+
+-- Calculate the average star rating for businesses in 'Toronto' and 'Restaurants' and group the results
+
+SELECT AVG(b.stars) AS average_rating
+FROM business AS b
+JOIN category AS c ON b.ID = c.business_ID
+WHERE b.city = 'Toronto'
+	AND c.category = 'Restaurants'
+
++----------------+
+| average_rating |
++----------------+
+|            3.4 |
++----------------+
+
+--Display all results for businesses in 'Toronto' and 'Restaurants' order by star rating
+
+SELECT b.stars
+	,b.city
+	,b.name
+	,c.category
+FROM business AS b
+JOIN category AS c ON b.ID = c.business_ID
+WHERE b.city = 'Toronto'
+	AND c.category = 'Restaurants'
+ORDER BY b.stars ASC
+
++-------+---------+--------------------+-------------+
+| stars | city    | name               | category    |
++-------+---------+--------------------+-------------+
+|   1.5 | Toronto | Royal Dumpling     | Restaurants |
+|   2.0 | Toronto | 99 Cent Sushi      | Restaurants |
+|   3.0 | Toronto | Big Smoke Burger   | Restaurants |
+|   3.0 | Toronto | Pizzaiolo          | Restaurants |
+|   3.5 | Toronto | The Kosher Gourmet | Restaurants |
+|   4.0 | Toronto | Edulis             | Restaurants |
+|   4.0 | Toronto | Mama Mia           | Restaurants |
+|   4.0 | Toronto | Naniwa-Taro        | Restaurants |
+|   4.5 | Toronto | Sushi Osaka        | Restaurants |
+|   4.5 | Toronto | Cabin Fever        | Restaurants |
++-------+---------+--------------------+-------------+
+
+	
+i. Do the two groups you chose to analyze have a different distribution of hours?
+
+--It appears that there is no clear correlation between the star rating and the hours of operation. Restaurants with a wide range of star ratings have varying hours, including both those that are open and those that are not. 
+
+--There are restaurants with star ratings ranging from 1.5 to 4.5.
+
+--Some restaurants have a star rating of 1.5 (e.g., Royal Dumpling), and they have no hours listed, indicating that they might be closed or their hours of operation are not available.
+
+--Restaurants with star ratings of 4.0 or higher (e.g., Edulis, Cabin Fever, Sushi Osaka) generally have hours listed, suggesting they are open for some days during the week.
+
+--Restaurants with star ratings in the 2.0 to 3.5 range (e.g., 99 Cent Sushi, Big Smoke Burger, Pizzaiolo, The Kosher Gourmet) also have varying hours of operation. Some are open (e.g., 99 Cent Sushi, Big Smoke Burger, Pizzaiolo) while others (e.g., The Kosher Gourmet) have no hours listed.
+
+
+ii. Do the two groups you chose to analyze have a different number of reviews?
+
+--No. The two groups 'Toronto' and 'Restaurants' did not have any reviews at all. I cross checked this with other categories to ensure my results were accurate.
+         
+         
+iii. Are you able to infer anything from the location data provided between these two groups? Explain.
+
+--Downtown core is less stars rating then neighbourhoods Etobicoke, High Park & Willowdale which are suburbs of Toronto. It's possible that the difference in star ratings between these two groups reflects the contrasting dynamics of urban and suburban areas. In the downtown core, businesses might face more intense competition and higher customer expectations. In suburban neighborhoods, businesses may experience less competition and potentially receive higher ratings from local residents.
+
+SQL code used for analysis:
+
+--Categories 'Toronto' & 'Restaurants' reviews
+
+SELECT b.id, b.city, b.stars, c.business_id, c.category, r.id, r.business_id, r.text
+FROM business AS b
+JOIN category AS c ON b.id = c.business_id
+JOIN review AS r ON r.business_id = b.id
+WHERE b.city = 'Toronto'
+	AND c.category = 'Restaurants'
+
++----+------+-------+-------------+----------+------+-----+--------------+
+| id | city | stars | business_id | category | text | id  | business_id  |
++----+------+-------+-------------+----------+------+-----+--------------+
++----+------+-------+-------------+----------+------+-----+--------------+
+(Zero rows)
+
+--Cross reference reviews to ensure query above is accurate, kept 'Toronto' removed category 'Restaurants' and results returned.
+
+SELECT b.id, b.city, b.stars, c.business_id, c.category, r. text, r.id, r.business_id
+FROM business AS b
+JOIN category AS c ON b.id = c.business_id
+JOIN review AS r ON r.business_id = b.id
+WHERE b.city = 'Toronto'
+
++------------------------+---------+-------+------------------------+-------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------+------------------------+
+| id                     | city    | stars | business_id            | category    | text                                                                                                                                                                                                                                                                                             | id                     | business_id            |
++------------------------+---------+-------+------------------------+-------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------+------------------------+
+| -Za5mjo-CYYUMsd1r8GC7Q | Toronto |   3.5 | -Za5mjo-CYYUMsd1r8GC7Q | Active Life | As the other reviewers have said, this is as close as you can get to a real beach in Toronto. It has great places for volleyball, a nice boardwalk, and-- this is key-- it's great for people watching. Hello, extremely large man! I am sorry for staring, but your belly just jiggles so much! | -696L4nw2wPqyPdH8seJuA | -Za5mjo-CYYUMsd1r8GC7Q |
+|                        |         |       |                        |             |                                                                                                                                                                                                                                                                                                  |                        |                        |
+|                        |         |       |                        |             | However, I do have to say that, in Vancouver, water is *blue*. Not green. Your algae level was a bit excessive-- I didn't feel like going into the water. And admittedly, it is a bit crowded, and the washrooms are nasty, but that's true at most beaches I've visited in my life.             |                        |                        |
+
+	
+--Distribution of hours for 'Toronto' & 'Restaurants' by count
+
+SELECT b.name
+	,b.city
+	,b.stars
+	,c.category
+	,count(h.hours)
+FROM business AS b
+JOIN category AS c ON b.id = c.business_id
+LEFT JOIN hours AS h ON b.id = h.business_id
+WHERE b.city = 'Toronto'
+	AND c.category = 'Restaurants'
+GROUP BY b.name
+	,b.city
+	,b.stars
+	,c.category
+ORDER BY b.stars
+
+--------------------+---------+-------+-------------+----------------+
+| name               | city    | stars | category    | count(h.hours) |
++--------------------+---------+-------+-------------+----------------+
+| Royal Dumpling     | Toronto |   1.5 | Restaurants |              0 |
+| 99 Cent Sushi      | Toronto |   2.0 | Restaurants |              7 |
+| Big Smoke Burger   | Toronto |   3.0 | Restaurants |              7 |
+| Pizzaiolo          | Toronto |   3.0 | Restaurants |              7 |
+| The Kosher Gourmet | Toronto |   3.5 | Restaurants |              0 |
+| Edulis             | Toronto |   4.0 | Restaurants |              5 |
+| Mama Mia           | Toronto |   4.0 | Restaurants |              0 |
+| Naniwa-Taro        | Toronto |   4.0 | Restaurants |              0 |
+| Cabin Fever        | Toronto |   4.5 | Restaurants |              7 |
+| Sushi Osaka        | Toronto |   4.5 | Restaurants |              7 |
++--------------------+---------+-------+-------------+----------------+
+
+--Neighbourhood data for 'Toronto' & 'Restaurants' sorted by stars
+
+SELECT b.id
+	,b.city
+	,b.stars
+	,b.neighborhood
+	,c.business_id
+	,c.category
+FROM business AS b
+JOIN category AS c ON b.id = c.business_id
+WHERE b.city = 'Toronto'
+	AND c.category = 'Restaurants'
+ORDER BY b.stars
+
++------------------------+---------+-------+------------------------+------------------------+-------------+
+| id                     | city    | stars | neighborhood           | business_id            | category    |
++------------------------+---------+-------+------------------------+------------------------+-------------+
+| -xEGQKqXZzvkdyVQilQtrg | Toronto |   1.5 | Willowdale             | -xEGQKqXZzvkdyVQilQtrg | Restaurants |
+| 1nTMWMa6v-eBKkPYA3gxkQ | Toronto |   2.0 | Downtown Core          | 1nTMWMa6v-eBKkPYA3gxkQ | Restaurants |
+| 0B3W6KxkD3o4W4l6cq735w | Toronto |   3.0 | Downtown Core          | 0B3W6KxkD3o4W4l6cq735w | Restaurants |
+| 1NyHpXJqSLHnvDCOW0nJDg | Toronto |   3.0 | Entertainment District | 1NyHpXJqSLHnvDCOW0nJDg | Restaurants |
+| 2YUPCtZkuoGQ4wBn8ncV_w | Toronto |   3.5 |                        | 2YUPCtZkuoGQ4wBn8ncV_w | Restaurants |
+| 37kk0IW6jL7ZlxZF6k2QBg | Toronto |   4.0 | Niagara                | 37kk0IW6jL7ZlxZF6k2QBg | Restaurants |
+| -HVFJ-fD12z1evEExDPZ_A | Toronto |   4.0 |                        | -HVFJ-fD12z1evEExDPZ_A | Restaurants |
+| 2lo7N8RZOCS0DDxO6LPQhw | Toronto |   4.0 | Willowdale             | 2lo7N8RZOCS0DDxO6LPQhw | Restaurants |
+| 0e-j5VcEn54EZT-FKCUZdw | Toronto |   4.5 | Etobicoke              | 0e-j5VcEn54EZT-FKCUZdw | Restaurants |
+| -n27mJ_jQWGCuIukTvg9Mg | Toronto |   4.5 | High Park              | -n27mJ_jQWGCuIukTvg9Mg | Restaurants |
++------------------------+---------+-------+------------------------+------------------------+-------------+
+		
+2. Group business based on the ones that are open and the ones that are closed. What differences can you find between the ones that are still open and the ones that are closed? List at least two differences and the SQL code you used to arrive at your answer.
+		
+i. Difference 1:
+  
+--Open businesses (is_open = 1) have a slightly higher average star rating of approximately 3.679. Closed businesses (is_open = 0) have a slightly lower average star rating of approximately 3.520. This suggests that, on average, open businesses tend to have slightly higher customer ratings compared to closed businesses. However, the difference in average star ratings between the two groups is relatively small, indicating that star ratings alone may not be the sole determinant of whether a business remains open or closed. Other factors such as location, customer reviews, business operations, and market conditions likely play a role in business success and longevity.      
+         
+ii. Difference 2:
+         
+--Open businesses (is_open = 1) have a significantly higher total number of reviews, totaling approximately 269,300 reviews. Closed businesses (is_open = 0) have a lower total number of reviews, totaling approximately 35,261 reviews.
+The data suggests that open businesses tend to have higher customer engagement and activity, as evidenced by the significantly larger number of reviews they have received. In contrast, closed businesses have fewer reviews, indicating lower customer activity, which may be associated with their closure.   
+         
+SQL code used for analysis:
+
+SELECT is_open, AVG(stars) AS average_rating
+FROM business
+GROUP BY is_open
+
++---------+-------------------+
+| is_open |    average_rating |
++---------+-------------------+
+|       0 | 3.520394736842105 |
+|       1 | 3.679009433962264 |
++---------+-------------------+
+
+SELECT is_open, SUM(review_count) AS total_reviews
+FROM business
+GROUP BY is_open
+
++---------+---------------+
+| is_open | total_reviews |
++---------+---------------+
+|       0 |         35261 |
+|       1 |        269300 |
++---------+---------------+
+
+	
+3. For this last part of your analysis, you are going to choose the type of analysis you want to conduct on the Yelp dataset and are going to prepare the data for analysis.
+
+Ideas for analysis include: Parsing out keywords and business attributes for sentiment analysis, clustering businesses to find commonalities or anomalies between them, predicting the overall star rating for a business, predicting the number of fans a user will have, and so on. These are just a few examples to get you started, so feel free to be creative and come up with your own problem you want to solve. Provide answers, in-line, to all of the following:
+	
+i. Indicate the type of analysis you chose to do:
+         
+--The objective of this analysis is to investigate whether there is a correlation between star ratings in the Yelp dataset, specifically focusing on the number of reviews that contain counts in the columns 'useful', 'funny', or 'cool'.
+
+ii. Write 1-2 brief paragraphs on the type of data you will need for your analysis and why you chose that data:
+
+--The analysis relies on a comprehensive dataset from Yelp. Focus will be made on the tables: business and reivew. 
+
+--Business Data: For this analysis we will focus on star ratings serve as a critical metric for evaluating customer satisfaction. We will also incorporate review on city and state. Review Data: The review table houses user-generated reviews, along with counts for the number of users who found these reviews 'useful', 'funny', and 'cool'. These counts represent user engagement with reviews, shedding light on the sentiment and interactions surrounding each business. By considering these counts alongside star ratings, we can explore whether user engagement correlates with higher or lower ratings.                    
+                  
+iii. Output of your finished dataset:
+         
+--Higher Star Ratings Mean More Engagement: Businesses with higher star ratings tend to receive more user interactions. In other words, when users rate a business more positively, they are more likely to engage with reviews by marking them as 'useful', 'funny', and 'cool'.
+
+--Visibility and Engagement Go Hand in Hand: Businesses with a higher number of reviews also attract more user interactions. This suggests that businesses with greater visibility and engagement from customers tend to receive more reviews and user interactions.
+
+--Focus on 4.0-Star Businesses: To narrow our analysis, we looked specifically at businesses with a 4.0-star rating, which had the highest counts of "useful" votes. Among these, Delmonico Steakhouse in Las Vegas received the most "useful" votes, making it a standout in this category. However, it's essential to acknowledge that cities heavily reliant on tourism, like Las Vegas, can disproportionately impact these results.
+
+--Top Cities for 4.0-Star Businesses: We identified the top 5 cities with the most "useful" votes for businesses rated 4.0 stars. Las Vegas and Phoenix were the leading cities in terms of user engagement with 4.0-star businesses. While this information is valuable, it's crucial to consider that cities like Las Vegas may exhibit unique patterns due to their tourism-driven nature.
+
+--In summary, our analysis unveiled meaningful connections between star ratings, user engagement, and review counts. Higher star ratings were associated with increased user interactions, indicating that businesses with better ratings tend to have more engaged customers. Additionally, we identified cities and businesses that excelled in user engagement, particularly within the 4.0-star rating category.
+
+iv. Provide the SQL code you used to create your final dataset:
+
+--Review the star rating count by 'funny' 'useful' and 'cool' votes for all businesses 
+
+SELECT b.stars,
+  SUM(CASE WHEN r.funny > 0 THEN 1 ELSE 0 END) AS funny_count,
+  SUM(CASE WHEN r.useful > 0 THEN 1 ELSE 0 END) AS useful_count,
+  SUM(CASE WHEN r.cool > 0 THEN 1 ELSE 0 END) AS cool_count,
+  (SUM(CASE WHEN r.funny > 0 THEN 1 ELSE 0 END) + SUM(CASE WHEN r.useful > 0 THEN 1 ELSE 0 END) + SUM(CASE WHEN r.cool > 0 THEN 1 ELSE 0 END)) AS total_count
+FROM
+  business AS b
+JOIN
+  review AS r ON b.id = r.business_id
+GROUP BY
+  b.stars
+ORDER BY
+  b.stars ASC
+
++-------+-------------+--------------+------------+-------------+
+| stars | funny_count | useful_count | cool_count | total_count |
++-------+-------------+--------------+------------+-------------+
+|   1.0 |           0 |            1 |          0 |           1 |
+|   1.5 |           0 |            2 |          0 |           2 |
+|   2.0 |           2 |            5 |          2 |           9 |
+|   2.5 |           6 |           19 |          5 |          30 |
+|   3.0 |          12 |           22 |         13 |          47 |
+|   3.5 |          28 |           63 |         38 |         129 |
+|   4.0 |          31 |           73 |         40 |         144 |
+|   4.5 |          13 |           47 |         30 |          90 |
+|   5.0 |           1 |           12 |          4 |          17 |
++-------+-------------+--------------+------------+-------------+
+
+--Review the star rating count along with review_counts compared to vote 'funny' 'useful' and 'cool' votes counts for all businesses 
+
+SELECT
+  b.stars,
+  b.review_count,
+  SUM(CASE WHEN r.funny > 0 THEN 1 ELSE 0 END) AS funny_count,
+  SUM(CASE WHEN r.useful > 0 THEN 1 ELSE 0 END) AS useful_count,
+  SUM(CASE WHEN r.cool > 0 THEN 1 ELSE 0 END) AS cool_count,
+  (SUM(CASE WHEN r.funny > 0 THEN 1 ELSE 0 END) + SUM(CASE WHEN r.useful > 0 THEN 1 ELSE 0 END) + SUM(CASE WHEN r.cool > 0 THEN 1 ELSE 0 END)) AS total_count
+FROM
+  business AS b
+JOIN
+  review AS r ON b.id = r.business_id
+GROUP BY
+  b.stars
+ORDER BY
+  b.stars ASC
+
+  +-------+--------------+-------------+--------------+------------+-------------+
+| stars | review_count | funny_count | useful_count | cool_count | total_count |
++-------+--------------+-------------+--------------+------------+-------------+
+|   1.0 |            6 |           0 |            1 |          0 |           1 |
+|   1.5 |           11 |           0 |            2 |          0 |           2 |
+|   2.0 |           12 |           2 |            5 |          2 |           9 |
+|   2.5 |          324 |           6 |           19 |          5 |          30 |
+|   3.0 |          115 |          12 |           22 |         13 |          47 |
+|   3.5 |          138 |          28 |           63 |         38 |         129 |
+|   4.0 |         1389 |          31 |           73 |         40 |         144 |
+|   4.5 |          821 |          13 |           47 |         30 |          90 |
+|   5.0 |           21 |           1 |           12 |          4 |          17 |
++-------+--------------+-------------+--------------+------------+-------------+
+
+--Scale down data to review useful counts as these have the highest overall count accross all star ratings
+--Review only businesses with 'useful' vote accross all stars
+
+SELECT
+  b.stars,
+  b.review_count,
+  SUM(CASE WHEN r.useful > 0 THEN 1 ELSE 0 END) AS useful_count
+  FROM business AS b
+JOIN
+  review AS r ON b.id = r.business_id
+GROUP BY
+  b.stars
+ORDER BY
+  b.stars ASC
+
++-------+--------------+--------------+
+| stars | review_count | useful_count |
++-------+--------------+--------------+
+|   1.0 |            6 |            1 |
+|   1.5 |           11 |            2 |
+|   2.0 |           12 |            5 |
+|   2.5 |          324 |           19 |
+|   3.0 |          115 |           22 |
+|   3.5 |          138 |           63 |
+|   4.0 |         1389 |           73 |
+|   4.5 |          821 |           47 |
+|   5.0 |           21 |           12 |
++-------+--------------+--------------+
+
+--Businesses with star rating of 4.0 have highest useful count, deeper dive into this analysis
+--Review list of businesses where stars = 4.0 and 'useful' vote count indicated by descending order to see the top 5. Please note this list below is by individual businesses. Delmonico Steakhouse has the most useful counts in the star rating of 4.0
+
+SELECT
+  b.stars,
+  b.name,
+  b.city,
+  b.state,
+  r.useful
+FROM business AS b
+JOIN
+  review AS r ON b.id = r.business_id
+WHERE
+  b.stars = 4.0
+ORDER BY
+  r.useful DESC
+LIMIT 5
+
++-------+-----------------------------+-----------+-------+--------+
+| stars | name                        | city      | state | useful |
++-------+-----------------------------+-----------+-------+--------+
+|   4.0 | Delmonico Steakhouse        | Las Vegas | NV    |     12 |
+|   4.0 | Dreamy Draw Recreation Area | Phoenix   | AZ    |      9 |
+|   4.0 | Woodlot Restaurant          | Toronto   | ON    |      7 |
+|   4.0 | Full House BBQ              | Las Vegas | NV    |      7 |
+|   4.0 | Big Wong Restaurant         | Las Vegas | NV    |      6 |
++-------+-----------------------------+-----------+-------+--------+
+
+--Determine the top 5 cities with the most 'useful' votes for all businesses with a rating of 4.0. 
+
+SELECT
+  b.stars,
+  b.city,
+  b.state,
+  SUM(r.useful) AS total_useful
+FROM business AS b
+JOIN
+  review AS r ON b.id = r.business_id
+WHERE
+  b.stars = 4.0
+GROUP BY
+  b.stars,
+  b.city,
+  b.state
+ORDER BY
+  total_useful DESC
+LIMIT 5;
+
++-------+------------+-------+--------------+
+| stars | city       | state | total_useful |
++-------+------------+-------+--------------+
+|   4.0 | Las Vegas  | NV    |           41 |
+|   4.0 | Phoenix    | AZ    |           27 |
+|   4.0 | Toronto    | ON    |           16 |
+|   4.0 | Henderson  | NV    |           10 |
+|   4.0 | Scottsdale | AZ    |           10 |
++-------+------------+-------+--------------+
+
+
+--For future analysis, detemine what cities have the most 'useful' votes for each star rating and perhaps narrow down search by incorporating categories.
+
+SELECT
+  sub.stars,
+  sub.city,
+  sub.max_useful_count
+FROM (
+  SELECT
+    b.stars,
+    b.city,
+    MAX(r.useful) AS max_useful_count
+  FROM
+    business AS b
+  JOIN
+    review AS r ON b.id = r.business_id
+  GROUP BY
+    b.stars,
+    b.city
+) AS sub
+JOIN (
+  SELECT
+    stars,
+    MAX(max_useful_count) AS max_useful_count
+  FROM (
+    SELECT
+      b.stars,
+      b.city,
+      MAX(r.useful) AS max_useful_count
+    FROM
+      business AS b
+    JOIN
+      review AS r ON b.id = r.business_id
+    GROUP BY
+      b.stars,
+      b.city
+  ) AS sub_inner
+  GROUP BY
+    stars
+) AS maxUseful ON sub.stars = maxUseful.stars
+    AND sub.max_useful_count = maxUseful.max_useful_count
+ORDER BY
+  sub.stars ASC;
+
++-------+--------------+------------------+
+| stars | city         | max_useful_count |
++-------+--------------+------------------+
+|   1.0 | Charlotte    |                2 |
+|   1.5 | Indian Trail |                1 |
+|   1.5 | Phoenix      |                1 |
+|   2.0 | Tempe        |                5 |
+|   2.5 | Las Vegas    |               13 |
+|   3.0 | Scottsdale   |                8 |
+|   3.5 | Las Vegas    |               11 |
+|   4.0 | Las Vegas    |               12 |
+|   4.5 | Toronto      |                8 |
+|   5.0 | Tempe        |                9 |
++-------+--------------+------------------+
+
+
+SELECT CASE 
+		WHEN r.useful = 0
+			THEN '0'
+		WHEN r.useful = 1
+			THEN '1'
+		WHEN r.useful = 2
+			THEN '2'
+		WHEN r.useful = 3
+			THEN '3'
+		WHEN r.useful >= 4
+			THEN '4 and above'
+		END AS useful_count_category
+	,COUNT(*) AS count
+FROM review AS r
+JOIN category AS c ON r.business_id = c.business_id
+LEFT JOIN business AS b ON b.id = r.id
+WHERE c.category = 'Restaurants'
+GROUP BY useful_count_category;
+
++-----------------------+-------+
+| useful_count_category | count |
++-----------------------+-------+
+| 0                     |    71 |
+| 1                     |    18 |
+| 2                     |     5 |
+| 3                     |     2 |
+| 4 and above           |     4 |
++-----------------------+-------+
+
+
+
+
